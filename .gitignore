@@ -1,0 +1,7 @@
+//Haz que no meta los node_modules
+
+{
+    "exclude": [
+        "node_modules"
+    ]
+}

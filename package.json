@@ -1,0 +1,40 @@
+{
+  "name": "back_norvusrn",
+  "description": "Backend de un proyecto con react native para la gestión de manga",
+  "version": "1.0.0",
+  "main": "app.ts",
+  "scripts": {
+    "dev": "nodemon index.ts"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IronFist482/back_norvusRN.git"
+  },
+  "keywords": [
+    "manga",
+    "gestion",
+    "organización",
+    "node"
+  ],
+  "author": "Cerna Pérez Ian Daniel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IronFist482/back_norvusRN/issues"
+  },
+  "homepage": "https://github.com/IronFist482/back_norvusRN#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.1",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.2",
+    "nodemon": "^3.0.1",
+    "typescript": "5.2.2"
+  }
+}
