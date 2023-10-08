@@ -1,17 +1,6 @@
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
-// MYSQL_ROOT_PASSWORD="root_554721_needs_hash"
-
-// DB_HOST="localhost"
-// DB_PORT="3306"
-// DB_USER="dev_user"
-// DB_PASS="dev_password"
-// DB_NAME="norvus_bd"
-
-// # use mysql and generate url
-// DATABASE_URL="mysql://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}"
-
 const env = createEnv({
   server: {
     MYSQL_ROOT_PASSWORD: z.string(),
@@ -35,7 +24,3 @@ export const config = {
   env,
   args,
 };
-
-console.log({
-  url: env.DATABASE_URL,
-});
