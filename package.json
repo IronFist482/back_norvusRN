@@ -5,7 +5,11 @@
   "main": "app.ts",
   "scripts": {
     "dev": "nodemon index.ts",
-    "prisma:pull": "prisma db pull"
+    "prisma:pull": "prisma db pull",
+    "prisma:gen": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:studio": "prisma studio",
+    "prisma:migrate": "prisma migrate dev --name init"
   },
   "eslintConfig": {
     "extends": "standard"
@@ -28,11 +32,13 @@
   "homepage": "https://github.com/IronFist482/back_norvusRN#readme",
   "dependencies": {
     "@prisma/client": "^5.4.1",
+    "@t3-oss/env-core": "^0.7.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql2": "^3.6.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.14",
