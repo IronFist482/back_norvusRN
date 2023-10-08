@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cuenta {
+  id_cue  Int      @id @default(autoincrement())
+  cor_cue String   @db.VarChar(45)
+  con_cue String   @db.VarChar(45)
+  pre_cue Int      @default(0)
+  nic_cue String   @db.VarChar(45)
+  usuario usuario?
+}
+
+model rol {
+  id_rol  Int       @id
+  nom_rol String    @db.VarChar(45)
+  usuario usuario[]
+}
+
+model usuario {
+  id_usu    Int    @id @default(autoincrement())
+  nom_usu   String @db.VarChar(45)
+  tel_usu   String @db.VarChar(45)
+  id_rol    Int    @default(0)
+  id_cuenta Int    @unique
+  cuenta    cuenta @relation(fields: [id_cuenta], references: [id_cue], onDelete: NoAction, onUpdate: NoAction, map: "id_cuenta")
+  rol       rol    @relation(fields: [id_rol], references: [id_rol], onDelete: NoAction, onUpdate: NoAction, map: "id_rol")
+
+  @@index([id_rol], map: "id_rol_idx")
+}
