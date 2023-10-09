@@ -1,14 +1,6 @@
-import type {
-  Request,
-  Response,
-  NextFunction,
-  RequestHandler,
-  Handler,
-} from "express";
+import type { RequestHandler, Handler } from "express";
 import { Router } from "express";
 import type { z } from "zod";
-import { ZodError } from "zod";
-import { zodErrorToErrors } from "@/utils";
 import { middlewareZParse } from "@/middlewares";
 
 type MiddlewareOpts<

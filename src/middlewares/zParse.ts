@@ -1,4 +1,4 @@
-import { zParse } from "@/lib";
+import { zParse } from "@lib";
 import { zodErrorToErrors } from "@/utils";
 import { NextFunction, Request, Response } from "express";
 import z, { ZodError } from "zod";

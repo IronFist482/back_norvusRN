@@ -1,0 +1,26 @@
+meta {
+  name: postUsuario
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/usuario
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nom_usu": "Demian",
+    "tel_usu": "5547212321",
+    "cuenta": {
+      "create": {
+        "cor_cue": "cor cue wtf this is",
+        "con_cue": "con cue ???",
+        "nic_cue": "nic cue bro q cojones",
+        "pre_cue": 100
+      }
+    }
+  }
+}

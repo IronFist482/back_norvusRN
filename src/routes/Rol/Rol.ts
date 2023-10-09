@@ -7,12 +7,12 @@ const rolMonad = new ControllerMonad();
 const rolHandlers = new RolHandler();
 
 rolMonad
-  .get("/prueba", async (req, res) => {
+  .get("/", async (req, res) => {
     const roles = await rolHandlers.getRoles();
     return res.json(roles);
   })
   .post(
-    "/prueba",
+    "/",
     async (req, res) => {
       const rolCreated = await rolHandlers.createRol(req.body);
 

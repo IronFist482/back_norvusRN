@@ -1,5 +1,5 @@
 import { Prisma, Cuenta } from "@prisma/client";
-import { bd } from "../../db";
+import { bd } from "@/db";
 
 export class CuentaHandler {
   db = bd;

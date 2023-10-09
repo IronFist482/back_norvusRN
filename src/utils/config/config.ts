@@ -24,9 +24,19 @@ const env = createEnv({
 
 const args = {
   watch: process.argv.includes("--watch"),
-};
+} as const;
+
+const Constants = {
+  GLOBAL_PREFIX: "/api",
+  ROUTES: {
+    USUARIO: "/usuario",
+    CUENTA: "/cuenta",
+    ROL: "/rol",
+  },
+} as const;
 
 export const config = {
   env,
   args,
-};
+  Constants,
+} as const;

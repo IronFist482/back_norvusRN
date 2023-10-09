@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import cors from "cors";
 
 import { config } from "./utils";
-import { RolRoutes } from "./routes";
+import { MainRoutes } from "./routes";
 
 export function main() {
   const corsOptions: cors.CorsOptions = {
@@ -16,7 +16,7 @@ export function main() {
   app.use(express.json());
   app.use(cors(corsOptions));
 
-  app.use("/api", RolRoutes);
+  app.use(config.Constants.GLOBAL_PREFIX, MainRoutes);
 
   app.listen(config.env.PORT, () => {
     console.log(
