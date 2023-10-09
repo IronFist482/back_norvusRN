@@ -1,6 +1,10 @@
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
+import dotenv from "dotenv";
+import dotenvExpand from "dotenv-expand";
+dotenvExpand.expand(dotenv.config({ override: true }));
+
 const env = createEnv({
   server: {
     MYSQL_ROOT_PASSWORD: z.string(),
@@ -14,6 +18,7 @@ const env = createEnv({
   clientPrefix: "",
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
+  isServer: true,
 });
 
 const args = {

@@ -2,34 +2,40 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator zod {
+  provider       = "zod-prisma-types"
+  output = "../src/generated/zod"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model cuenta {
+model Cuenta {
   id_cue  Int      @id @default(autoincrement())
   cor_cue String   @db.VarChar(45)
   con_cue String   @db.VarChar(45)
   pre_cue Int      @default(0)
   nic_cue String   @db.VarChar(45)
-  usuario usuario?
+  usuario Usuario?
 }
 
-model rol {
+model Rol {
   id_rol  Int       @id
   nom_rol String    @db.VarChar(45)
-  usuario usuario[]
+  usuario Usuario[]
 }
 
-model usuario {
+model Usuario {
   id_usu    Int    @id @default(autoincrement())
   nom_usu   String @db.VarChar(45)
   tel_usu   String @db.VarChar(45)
+  
   id_rol    Int    @default(0)
   id_cuenta Int    @unique
-  cuenta    cuenta @relation(fields: [id_cuenta], references: [id_cue], onDelete: NoAction, onUpdate: NoAction, map: "id_cuenta")
-  rol       rol    @relation(fields: [id_rol], references: [id_rol], onDelete: NoAction, onUpdate: NoAction, map: "id_rol")
+  cuenta    Cuenta @relation(fields: [id_cuenta], references: [id_cue], onDelete: NoAction, onUpdate: NoAction, map: "id_cuenta")
+  rol       Rol    @relation(fields: [id_rol], references: [id_rol], onDelete: NoAction, onUpdate: NoAction, map: "id_rol")
 
   @@index([id_rol], map: "id_rol_idx")
 }
