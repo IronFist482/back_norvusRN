@@ -7,9 +7,8 @@ import type {
   Router,
 } from "express";
 import type { z, AnyZodObject } from "zod";
-import { ZodError, ZodTransformer } from "zod";
-import { zodErrorToErrors } from "../utils/config/zod";
-import { CLOG } from "../utils";
+import { ZodError } from "zod";
+import { zodErrorToErrors } from "@/utils";
 
 type MiddlewareOpts<
   TBody extends AnyZodObject = AnyZodObject,
@@ -95,7 +94,234 @@ export function middlewareZParse<
   };
 }
 
-export function createController<
+export const createController = {
+  all: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "all", schemas ?? {}, handler);
+  },
+
+  get: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "get", schemas ?? {}, handler);
+  },
+
+  post: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "post", schemas ?? {}, handler);
+  },
+
+  put: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "put", schemas ?? {}, handler);
+  },
+
+  delete: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "delete", schemas ?? {}, handler);
+  },
+
+  head: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "head", schemas ?? {}, handler);
+  },
+
+  options: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "patch", schemas ?? {}, handler);
+  },
+
+  patch: function <
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): Controller {
+    return createControllerFn(path, "patch", schemas ?? {}, handler);
+  },
+} satisfies Record<ExpressMethods, any>;
+
+export class ControllerMonad {
+  controllers: Controller[] = [];
+
+  all<
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): ControllerMonad {
+    this.controllers.push(
+      createControllerFn(path, "all", schemas ?? {}, handler)
+    );
+    return this;
+  }
+
+  get<
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): ControllerMonad {
+    this.controllers.push(
+      createControllerFn(path, "get", schemas ?? {}, handler)
+    );
+    return this;
+  }
+
+  post<
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): ControllerMonad {
+    this.controllers.push(
+      createControllerFn(path, "post", schemas ?? {}, handler)
+    );
+    return this;
+  }
+
+  put<
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): ControllerMonad {
+    this.controllers.push(
+      createControllerFn(path, "put", schemas ?? {}, handler)
+    );
+    return this;
+  }
+
+  delete<
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): ControllerMonad {
+    this.controllers.push(
+      createControllerFn(path, "delete", schemas ?? {}, handler)
+    );
+    return this;
+  }
+
+  head<
+    TBody extends AnyZodObject = AnyZodObject,
+    TParams extends AnyZodObject = AnyZodObject,
+    TQuery extends AnyZodObject = AnyZodObject
+  >(
+    path: string,
+    handler: RequestWithMiddlewareHandler<
+      MiddlewareOpts<TBody, TParams, TQuery>
+    >,
+    schemas?: { body?: TBody; params?: TParams; query?: TQuery }
+  ): ControllerMonad {
+    this.controllers.push(
+      createControllerFn(path, "head", schemas ?? {}, handler)
+    );
+    return this;
+  }
+
+  registerControllers(router: Router): void {
+    this.controllers.forEach((route) => {
+      const { method, path, middlewares, handler } = route;
+      router[method](path, ...middlewares, handler);
+    });
+  }
+}
+
+function createControllerFn<
   TBody extends AnyZodObject = AnyZodObject,
   TParams extends AnyZodObject = AnyZodObject,
   TQuery extends AnyZodObject = AnyZodObject
@@ -109,7 +335,7 @@ export function createController<
   return new Controller(path, method, middlewares, handler as any);
 }
 
-export class Controller {
+class Controller {
   path: string;
   method: ExpressMethods;
   middlewares: Array<Handler>;
@@ -126,14 +352,4 @@ export class Controller {
     this.middlewares = middlewares;
     this.handler = handler;
   }
-}
-
-export function registerControllers(
-  router: Router,
-  controllers: Controller[]
-): void {
-  controllers.forEach((route) => {
-    const { method, path, middlewares, handler } = route;
-    router[method](path, ...middlewares, handler);
-  });
 }

@@ -1,37 +1,33 @@
 import { Router } from "express";
-import {
-  createController,
-  type Controller,
-  registerControllers,
-} from "../../middlewares";
+import { ControllerMonad } from "@/middlewares";
 import z from "zod";
 
 const rolRouter = Router();
 
-const rolRoutes: Controller[] = [
-  createController("/prueba", "get", {}, async (req, res) => {
+const rolMonad = new ControllerMonad();
+
+rolMonad
+  .get("/prueba", async (req, res) => {
     res.json({
       message: "Hello World!",
     });
-  }),
-  createController(
+  })
+  .post(
     "/prueba",
-    "post",
-    {
-      body: z.object({
-        name: z.string(),
-        age: z.number(),
-      }),
-    },
     async (req, res) => {
       res.json({
         message: "parsed!",
         body: req.body,
       });
+    },
+    {
+      body: z.object({
+        name: z.string(),
+        age: z.number(),
+      }),
     }
-  ),
-];
+  );
 
-registerControllers(rolRouter, rolRoutes);
+rolMonad.registerControllers(rolRouter);
 
 export default rolRouter;

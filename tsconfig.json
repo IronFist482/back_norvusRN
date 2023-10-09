@@ -3,6 +3,10 @@
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "module": "NodeNext",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "target": "es2020",
     "noImplicitAny": false,
     "sourceMap": true,
@@ -13,7 +17,9 @@
 
   "ts-node": {
     "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "experimentalSpecifierResolution": "node",
+
+    "require": ["tsconfig-paths/register"]
   },
   "exclude": ["node_modules"]
 }
