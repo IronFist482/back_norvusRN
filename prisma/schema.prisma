@@ -3,15 +3,15 @@ generator client {
 }
 
 generator zod {
-  provider       = "zod-prisma-types"
-  output = "../src/generated/zod"
+  provider = "zod-prisma-types"
+  output   = "../src/generated/zod"
 
-  createInputTypes                 = true // default is true
-  createModelTypes                 = false // default is true
-  addInputTypeValidation           = false // default is true
-  addIncludeType                   = false // default is true
-  addSelectType                    = false // default is true
-  createPartialTypes               = true // default is false
+  createInputTypes       = true
+  createModelTypes       = false
+  addInputTypeValidation = false
+  addIncludeType         = false
+  addSelectType          = false
+  createPartialTypes     = true
 }
 
 datasource db {
@@ -35,10 +35,10 @@ model Rol {
 }
 
 model Usuario {
-  id_usu    Int    @id @default(autoincrement())
-  nom_usu   String @db.VarChar(45)
-  tel_usu   String @db.VarChar(45)
-  
+  id_usu  Int    @id @default(autoincrement())
+  nom_usu String @db.VarChar(45)
+  tel_usu String @db.VarChar(45)
+
   id_rol    Int    @default(0)
   id_cuenta Int    @unique
   cuenta    Cuenta @relation(fields: [id_cuenta], references: [id_cue], onDelete: NoAction, onUpdate: NoAction, map: "id_cuenta")

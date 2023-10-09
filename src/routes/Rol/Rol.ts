@@ -1,10 +1,6 @@
-import { Router } from "express";
-import { ControllerMonad } from "@/middlewares";
-import z from "zod";
+import { ControllerMonad } from "@lib";
 import { RolCreateInputSchema } from "@schemas";
 import { RolHandler } from "@/handlers";
-
-const rolRouter = Router();
 
 const rolMonad = new ControllerMonad();
 
@@ -12,27 +8,23 @@ const rolHandlers = new RolHandler();
 
 rolMonad
   .get("/prueba", async (req, res) => {
-    res.json({
-      message: "Hello World!",
-    });
+    const roles = await rolHandlers.getRoles();
+    return res.json(roles);
   })
   .post(
     "/prueba",
     async (req, res) => {
-      const created = rolHandlers.createRol({
-        nom_rol: "asd",
-      });
+      const rolCreated = await rolHandlers.createRol(req.body);
 
-      res.json({
-        message: "parsed!",
-        body: req.body,
+      return res.json({
+        message: "Rol Created!",
+        rol: rolCreated,
       });
     },
     {
       body: RolCreateInputSchema,
     }
   );
+rolMonad.registerControllers();
 
-rolMonad.registerControllers(rolRouter);
-
-export default rolRouter;
+export default rolMonad.router;

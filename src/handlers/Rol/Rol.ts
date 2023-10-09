@@ -1,5 +1,5 @@
 import { Prisma, Rol } from "@prisma/client";
-import { bd } from "../../db";
+import { bd } from "@/db";
 
 export class RolHandler {
   db = bd;

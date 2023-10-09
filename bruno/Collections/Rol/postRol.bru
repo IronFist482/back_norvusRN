@@ -12,7 +12,16 @@ post {
 
 body:json {
   {
-    "name": "name",
-    "age": 10
+    "nom_rol": "otro"
   }
+}
+
+script:pre-request {
+  const { faker } = require('@faker-js/faker');
+  
+  const randomName = faker.name.fullName();
+  req.setBody({
+    nom_rol: randomName,
+  });
+  
 }
