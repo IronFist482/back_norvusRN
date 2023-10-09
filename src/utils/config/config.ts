@@ -13,6 +13,7 @@ const env = createEnv({
     PORT: z.coerce.number(),
     NODE_ENV: z.enum(["development", "production"]),
     DATABASE_URL: z.string().url(),
+    APP_URL: z.string().url(),
   },
   client: {},
   clientPrefix: "",

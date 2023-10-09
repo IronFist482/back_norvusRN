@@ -25,6 +25,5 @@ rolMonad
       body: RolCreateInputSchema,
     }
   );
-rolMonad.registerControllers();
 
-export default rolMonad.router;
+export default rolMonad.routerInstance;

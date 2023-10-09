@@ -189,9 +189,9 @@ const createController = {
 } satisfies Record<ExpressMethods, any>;
 
 class ControllerMonad {
-  controllers: Controller[] = [];
-
-  router: Router = Router();
+  private controllers: Controller[] = [];
+  private isRegistered = false;
+  private router: Router = Router();
 
   all<
     TBody extends z.ZodType = z.ZodType,
@@ -295,11 +295,20 @@ class ControllerMonad {
     return this;
   }
 
-  registerControllers(): void {
+  private registerControllers(): void {
     this.controllers.forEach((route) => {
       const { method, path, middlewares, handler } = route;
       this.router[method](path, ...middlewares, handler);
     });
+  }
+
+  get routerInstance(): Router {
+    if (!this.isRegistered) {
+      this.registerControllers();
+      this.isRegistered = true;
+    }
+
+    return this.router;
   }
 }
 

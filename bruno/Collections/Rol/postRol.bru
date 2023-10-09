@@ -17,11 +17,11 @@ body:json {
 }
 
 script:pre-request {
-  const { faker } = require('@faker-js/faker');
+  const { randRole } = require('@ngneat/falso')
   
-  const randomName = faker.name.fullName();
+  const randomRole = randRole()
   req.setBody({
-    nom_rol: randomName,
+    nom_rol: randomRole,
   });
   
 }

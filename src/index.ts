@@ -1,11 +1,11 @@
 import express, { Express } from "express";
 import cors from "cors";
 
-import "./utils/config";
+import { config } from "./utils";
 import { RolRoutes } from "./routes";
 
 export function main() {
-  const corsOptions = {
+  const corsOptions: cors.CorsOptions = {
     origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -16,14 +16,15 @@ export function main() {
   app.use(express.json());
   app.use(cors(corsOptions));
 
-  app.get("/", async (req, res) => {
-    res.send("Hello World!");
-    console.log("Hello World!");
-  });
-
   app.use("/api", RolRoutes);
 
-  app.listen(8080, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:8080`);
+  app.listen(config.env.PORT, () => {
+    console.log(
+      `⚡️[server]: Server is running at ${
+        config.env.NODE_ENV === "development"
+          ? `http://localhost:${config.env.PORT}`
+          : config.env.APP_URL
+      }`
+    );
   });
 }
