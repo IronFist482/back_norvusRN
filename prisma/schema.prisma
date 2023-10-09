@@ -5,6 +5,13 @@ generator client {
 generator zod {
   provider       = "zod-prisma-types"
   output = "../src/generated/zod"
+
+  createInputTypes                 = true // default is true
+  createModelTypes                 = false // default is true
+  addInputTypeValidation           = false // default is true
+  addIncludeType                   = false // default is true
+  addSelectType                    = false // default is true
+  createPartialTypes               = true // default is false
 }
 
 datasource db {
@@ -22,7 +29,7 @@ model Cuenta {
 }
 
 model Rol {
-  id_rol  Int       @id
+  id_rol  Int       @id @default(autoincrement())
   nom_rol String    @db.VarChar(45)
   usuario Usuario[]
 }

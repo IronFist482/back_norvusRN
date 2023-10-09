@@ -40,7 +40,7 @@ type RequestWithMiddlewareHandler<T extends MiddlewareOpts> =
       >
     : never;
 
-export async function zParse<
+async function zParse<
   TBody extends AnyZodObject | undefined = undefined,
   TParams extends AnyZodObject | undefined = undefined,
   TQuery extends AnyZodObject | undefined = undefined
@@ -66,7 +66,7 @@ export async function zParse<
   return parsed;
 }
 
-export function middlewareZParse<
+function middlewareZParse<
   TBody extends AnyZodObject | undefined = AnyZodObject,
   TParams extends AnyZodObject | undefined = AnyZodObject,
   TQuery extends AnyZodObject | undefined = AnyZodObject
@@ -94,7 +94,40 @@ export function middlewareZParse<
   };
 }
 
-export const createController = {
+class Controller {
+  path: string;
+  method: ExpressMethods;
+  middlewares: Array<Handler>;
+  handler: Handler;
+
+  constructor(
+    path: string,
+    method: ExpressMethods,
+    middlewares: Array<Handler>,
+    handler: Handler
+  ) {
+    this.path = path;
+    this.method = method;
+    this.middlewares = middlewares;
+    this.handler = handler;
+  }
+}
+
+function createControllerFn<
+  TBody extends AnyZodObject = AnyZodObject,
+  TParams extends AnyZodObject = AnyZodObject,
+  TQuery extends AnyZodObject = AnyZodObject
+>(
+  path: string,
+  method: ExpressMethods,
+  schemas: { body?: TBody; params?: TParams; query?: TQuery },
+  handler: RequestWithMiddlewareHandler<MiddlewareOpts<TBody, TParams, TQuery>>
+): Controller {
+  const middlewares = [middlewareZParse(schemas)];
+  return new Controller(path, method, middlewares, handler as any);
+}
+
+const createController = {
   all: function <
     TBody extends AnyZodObject = AnyZodObject,
     TParams extends AnyZodObject = AnyZodObject,
@@ -208,7 +241,7 @@ export const createController = {
   },
 } satisfies Record<ExpressMethods, any>;
 
-export class ControllerMonad {
+class ControllerMonad {
   controllers: Controller[] = [];
 
   all<
@@ -321,35 +354,4 @@ export class ControllerMonad {
   }
 }
 
-function createControllerFn<
-  TBody extends AnyZodObject = AnyZodObject,
-  TParams extends AnyZodObject = AnyZodObject,
-  TQuery extends AnyZodObject = AnyZodObject
->(
-  path: string,
-  method: ExpressMethods,
-  schemas: { body?: TBody; params?: TParams; query?: TQuery },
-  handler: RequestWithMiddlewareHandler<MiddlewareOpts<TBody, TParams, TQuery>>
-): Controller {
-  const middlewares = [middlewareZParse(schemas)];
-  return new Controller(path, method, middlewares, handler as any);
-}
-
-class Controller {
-  path: string;
-  method: ExpressMethods;
-  middlewares: Array<Handler>;
-  handler: Handler;
-
-  constructor(
-    path: string,
-    method: ExpressMethods,
-    middlewares: Array<Handler>,
-    handler: Handler
-  ) {
-    this.path = path;
-    this.method = method;
-    this.middlewares = middlewares;
-    this.handler = handler;
-  }
-}
+export { ControllerMonad, createController, middlewareZParse };
